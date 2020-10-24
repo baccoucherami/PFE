@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActionSheetController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { MaisonDhoteService } from '../../service/maison-dhote.service';
 
 @Component({
   selector: 'page-speaker-detail',
@@ -11,6 +12,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 })
 export class SpeakerDetailPage {
   speaker: any;
+  dataMaisonDote: any;
+  dataMaisonSelected: any;
+  mapdetails: any;
 
   constructor(
     private dataProvider: ConferenceData,
@@ -18,20 +22,33 @@ export class SpeakerDetailPage {
     public actionSheetCtrl: ActionSheetController,
     public confData: ConferenceData,
     public inAppBrowser: InAppBrowser,
-  ) {}
+    private maisonDhoteService:MaisonDhoteService
+  ) {
+    
+}
+  
 
   ionViewWillEnter() {
-    this.dataProvider.load().subscribe((data: any) => {
+  
       const speakerId = this.route.snapshot.paramMap.get('speakerId');
-      if (data && data.speakers) {
-        for (const speaker of data.speakers) {
-          if (speaker && speaker.id === speakerId) {
-            this.speaker = speaker;
-            break;
-          }
-        }
-      }
-    });
+      this.getAllData(speakerId);
+ 
+  }
+  getAllData(id) {
+    this.maisonDhoteService.getMaisonDhote().subscribe(res=>{
+      this.dataMaisonDote = res.data;
+      console.log(this.dataMaisonDote);
+      this.maisonDhoteService.getImageMaisonDhote().subscribe(img=>{
+        this.dataMaisonDote.forEach(element => {
+          element['src'] =  img.data.filter(e=>e.id== element.image_id)
+        });
+        this.dataMaisonSelected=this.dataMaisonDote.filter(e=>e.id==id)[0]
+      console.log(this.dataMaisonSelected);
+      this.mapdetails = {lat:+this.dataMaisonSelected.mapurl.slice().split(" ")[0],lng:+this.dataMaisonSelected.mapurl.slice().split(" ")[1]}
+      console.log( this.mapdetails);
+      
+      })
+    })
   }
 
   openExternalUrl(url: string) {

@@ -3,14 +3,14 @@ import { ConferenceData } from '../../providers/conference-data';
 import { Platform } from '@ionic/angular';
 import { DOCUMENT} from '@angular/common';
 
-import { darkStyle } from './map-dark-style';
+import { darkStyle } from './maps-dark-style';
 
 @Component({
-  selector: 'page-map',
-  templateUrl: 'map.html',
-  styleUrls: ['./map.scss']
+  selector: 'page-maps',
+  templateUrl: 'maps.html',
+  styleUrls: ['./maps.scss']
 })
-export class MapPage implements AfterViewInit {
+export class MapsPage implements AfterViewInit {
   @ViewChild('mapCanvas', { static: true }) mapElement: ElementRef;
 @Input() latLong : any;
 
@@ -38,26 +38,38 @@ export class MapPage implements AfterViewInit {
 if(this.latLong)
 {
   map = new googleMaps.Map(mapEle, {
-    center: { lat: this.latLong.lat, lng: this.latLong.lng },
+    center: { lat: 33.817983, lng: 10.9156712 }, //however should be changed to latLong object
     zoom: 11,
     styles: style,
-    
   });
 }
-else
+else{
       map = new googleMaps.Map(mapEle, {
         center: { lat: 33.817983, lng: 10.9156712 },
         zoom: 11,
         styles: style,
         
       });
+    }
 
       mapData.forEach((markerData: any) => {
         const infoWindow = new googleMaps.InfoWindow({
           content: `<h5>${markerData.name}</h5>`
           
         });
+if(this.latLong)
+{
+        const marker = new googleMaps.Marker({
+          position: { lat: this.latLong.lat, lng: this.latLong.lng },
+          map,
+          title: "hello"
+        });
 
+        marker.addListener('click', () => {
+          infoWindow.open(map, marker);
+        });
+      }
+      else{
         const marker = new googleMaps.Marker({
           position: { lat: 33.817983, lng: 10.9156712 },
           map,
@@ -67,6 +79,8 @@ else
         marker.addListener('click', () => {
           infoWindow.open(map, marker);
         });
+
+      }
       });
 
       googleMaps.event.addListenerOnce(map, 'idle', () => {

@@ -37,11 +37,14 @@ ion-toolbar ion-menu-button {
 }
 
 .speaker-background img {
-  width: 70px;
-  border-radius: 50%;
+  width: 100%;
+
   margin-top: calc(-1 * var(--ion-safe-area-top));
 }
-
+h2 {
+  margin-top: 47px;
+  font-size: 30px;
+}
 .speaker-background h2 {
   position: absolute;
 

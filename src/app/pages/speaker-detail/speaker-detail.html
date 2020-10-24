@@ -16,26 +16,25 @@
   </ion-header>
 
   <div class="speaker-background">
-    <img [src]="speaker?.profilePic" [alt]="speaker?.name">
-    <h2>{{speaker?.name}}</h2>
+    <img [src]="dataMaisonSelected?.src[0]?.url" [alt]="dataMaisonSelected?.nom">
+    
   </div>
 
   <div class="ion-padding speaker-detail">
-    <p>{{speaker?.about}} Say hello on social media!</p>
-
+    <h2>{{dataMaisonSelected?.nom}}</h2>
     <hr>
+    <p>{{dataMaisonSelected?.description}} </p>
+<p>Cost Par nuit : {{dataMaisonSelected?.costprnuit}} dt</p>
+    <hr>
+    <page-maps  *ngIf="mapdetails" [latLong]="mapdetails"></page-maps>
 
-    <ion-chip color="twitter" button (click)="openExternalUrl('https://twitter.com/' + speaker.twitter)">
-      <ion-icon name="logo-twitter"></ion-icon>
-      <ion-label>Twitter</ion-label>
+    <hr style="    margin-top: 45vh;">
+    <ion-chip color="facebook" button (click)="openExternalUrl(dataMaisonSelected?.instaUrl)">
+      <ion-icon name="logo-facebook"></ion-icon>
+      <ion-label>facebook</ion-label>
     </ion-chip>
 
-    <ion-chip color="dark" button (click)="openExternalUrl('https://github.com/ionic-team/ionic')">
-      <ion-icon name="logo-github"></ion-icon>
-      <ion-label>GitHub</ion-label>
-    </ion-chip>
-
-    <ion-chip color="instagram" button (click)="openExternalUrl('https://instagram.com/ionicframework')">
+    <ion-chip color="instagram" button (click)="openExternalUrl(dataMaisonSelected?.instaUrl)">
       <ion-icon name="logo-instagram"></ion-icon>
       <ion-label>Instagram</ion-label>
     </ion-chip>

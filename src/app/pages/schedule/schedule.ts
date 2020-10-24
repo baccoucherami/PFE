@@ -5,6 +5,8 @@ import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalCont
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
+import { Reservation } from '../../Models/Reservation';
+import { Maison } from '../../Models/Maison';
 
 @Component({
   selector: 'page-schedule',
@@ -12,6 +14,13 @@ import { UserData } from '../../providers/user-data';
   styleUrls: ['./schedule.scss'],
 })
 export class SchedulePage implements OnInit {
+  // get reservations by client ID
+  reservations: Reservation[] = [new Reservation("10-05-2021","13-05-2021",1200,
+  {...new Maison(),nom:"maison1",imageId:"https://cf.bstatic.com/images/hotel/max1024x768/159/159494925.jpg",mapUrl:"33.8086848,10.8475377",description:"desciption2"}),
+  new Reservation("10-05-2021","15-05-2021",1200,
+  {...new Maison(),nom:"maison2",imageId:"https://media-cdn.tripadvisor.com/media/photo-m/1280/17/59/14/f9/photo0jpg.jpg",mapUrl:"33.8295245,10.8165099",description:"desciption3"}),
+  new Reservation("10-05-2021","16-05-2021",1200,
+  {...new Maison(),nom:"maison3",imageId:"https://static.flyaway.pro/photos/6498/Salon-Maison-Hotes-Dar-Ayed-Matmata-Tunisie.jpg",mapUrl:"33.8295245,10.8165099",description:"desciption3"})];
   // Gets a reference to the list element
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
 
@@ -41,6 +50,7 @@ export class SchedulePage implements OnInit {
     this.updateSchedule();
 
     this.ios = this.config.get('mode') === 'ios';
+  
   }
 
   updateSchedule() {
@@ -98,7 +108,7 @@ export class SchedulePage implements OnInit {
 
   }
 
-  async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any, title: string) {
+  async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: Reservation, title: string) {
     const alert = await this.alertCtrl.create({
       header: title,
       message: 'Would you like to remove this session from your favorites?',
@@ -114,8 +124,10 @@ export class SchedulePage implements OnInit {
         {
           text: 'Remove',
           handler: () => {
-            // they want to remove this session from their favorites
-            this.user.removeFavorite(sessionData.name);
+            this.reservations=this.reservations.filter((res)=>{
+              return sessionData.maison.nom != res.maison.nom
+            })
+            // this.user.removeFavorite(sessionData.name);
             this.updateSchedule();
 
             // close the sliding item and hide the option buttons

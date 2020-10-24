@@ -13,8 +13,14 @@ ion-col:not(:last-of-type) .speaker-card {
 .speaker-card .speaker-item {
   --min-height: 85px;
 }
-
-.speaker-card .speaker-item h2 {
+.bouton-rs
+{
+background: #3880ff;
+    color: #fff;
+    border-radius: 22px;
+    padding: 9px;
+    float: right;
+}.speaker-card .speaker-item h2 {
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.02em;

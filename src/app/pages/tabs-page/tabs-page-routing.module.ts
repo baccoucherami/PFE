@@ -58,6 +58,24 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'ajouterMaison',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../ajouter-maison/ajouter-maison.module').then(m => m.AjouterMaisonPageModule)
+          }
+        ]
+      },
+      {
+        path: 'maisons',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../maisons/maisons.module').then(m => m.MaisonsPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/app/tabs/schedule',
         pathMatch: 'full'

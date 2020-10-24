@@ -1,23 +1,27 @@
-import { Component, ElementRef, Inject, ViewChild, AfterViewInit, Input } from '@angular/core';
-import { ConferenceData } from '../../providers/conference-data';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { DOCUMENT} from '@angular/common';
-
+import { Maison } from '../../Models/Maison';
+import { ConferenceData } from '../../providers/conference-data';
 import { darkStyle } from './map-dark-style';
 
 @Component({
-  selector: 'page-map',
-  templateUrl: 'map.html',
-  styleUrls: ['./map.scss']
+  selector: 'app-maisons',
+  templateUrl: './maisons.page.html',
+  styleUrls: ['./maisons.page.scss'],
 })
-export class MapPage implements AfterViewInit {
+export class MaisonsPage {
+  maisons = [{...new Maison(),nom:"maison",imageId:"1",mapUrl:"33.8086848,10.8475377",description:"desciption2"},
+  {...new Maison(),nom:"maison3",imageId:"1",mapUrl:"33.8295245,10.8165099",description:"desciption3"},
+  {...new Maison(),nom:"maison4",imageId:"1",mapUrl:"33.8026761,10.8860757",description:"desciption4"}] 
+
   @ViewChild('mapCanvas', { static: true }) mapElement: ElementRef;
-@Input() latLong : any;
 
   constructor(
     @Inject(DOCUMENT) private doc: Document,
     public confData: ConferenceData,
     public platform: Platform) {}
+ 
 
   async ngAfterViewInit() {
     const appEl = this.doc.querySelector('ion-app');
@@ -35,16 +39,7 @@ export class MapPage implements AfterViewInit {
 
     this.confData.getMap().subscribe((mapData: any) => {
       const mapEle = this.mapElement.nativeElement;
-if(this.latLong)
-{
-  map = new googleMaps.Map(mapEle, {
-    center: { lat: this.latLong.lat, lng: this.latLong.lng },
-    zoom: 11,
-    styles: style,
-    
-  });
-}
-else
+
       map = new googleMaps.Map(mapEle, {
         center: { lat: 33.817983, lng: 10.9156712 },
         zoom: 11,
@@ -57,16 +52,23 @@ else
           content: `<h5>${markerData.name}</h5>`
           
         });
-
-        const marker = new googleMaps.Marker({
-          position: { lat: 33.817983, lng: 10.9156712 },
-          map,
-          title: "hello"
+        this.maisons.forEach((maison) => {
+          console.log(maison);
+          let mapUrl = maison.mapUrl.split(',');
+          let lat=+mapUrl[0];
+          let long=+mapUrl[1];
+          console.log(lat+" "+long);
+          const marker = new googleMaps.Marker({
+            position: { lat: lat, lng: long },
+            map,
+            title:"hello"
+          });
+          marker.addListener('click', () => {
+            infoWindow.open(map, marker);
+          });
+          
         });
-
-        marker.addListener('click', () => {
-          infoWindow.open(map, marker);
-        });
+   
       });
 
       googleMaps.event.addListenerOnce(map, 'idle', () => {
@@ -115,5 +117,5 @@ function getGoogleMaps(apiKey: string): Promise<any> {
       }
     };
   });
-}
 
+}

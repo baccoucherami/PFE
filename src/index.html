@@ -13,7 +13,8 @@
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1/leaflet.css" />
   <base href="/">
 
   <link rel="icon" type="image/x-icon" href="assets/img/appicon.png">
@@ -24,13 +25,15 @@
 </head>
 
 <body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/places.js@1.19.0"></script>
+  <script src="assets/js/algolia.js"></script>
+  <script src="https://cdn.jsdelivr.net/leaflet/1/leaflet.js"></script>
 
   <app-root></app-root>
 
   <!-- Replace the API key with your own, see:
     https://developers.google.com/maps/documentation/javascript/get-api-key -->
-  <!-- <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8pf6ZdFQj5qw7rc_HSGrhUwQKfIe9ICw"></script> -->
-
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 

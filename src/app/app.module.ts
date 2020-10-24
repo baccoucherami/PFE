@@ -12,6 +12,9 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
+import { MaisonDhoteService } from './service/maison-dhote.service';
+import { SignUpModule } from './pages/signup/signup.module';
+import { LoginModule } from './pages/login/login.module';
 
 @NgModule({
   imports: [
@@ -19,6 +22,8 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    SignUpModule,
+    LoginModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -26,7 +31,7 @@ import { FormsModule } from '@angular/forms';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar],
+  providers: [InAppBrowser, SplashScreen, StatusBar,MaisonDhoteService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
