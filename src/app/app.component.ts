@@ -10,6 +10,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
 
 import { UserData } from './providers/user-data';
+import { __await } from 'tslib';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-root',
@@ -18,26 +20,61 @@ import { UserData } from './providers/user-data';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
+  role:string='';
   appPages = [
     {
-      title: 'Schedule',
+      title: 'Réservations',
       url: '/app/tabs/schedule',
-      icon: 'calendar'
+      icon: 'calendar',
+      role: 'client'
     },
     {
       title: 'Maison D\'hôte',
       url: '/app/tabs/speakers',
-      icon: 'people'
+      icon: 'people',
+      role: 'client'
     },
     {
-      title: 'Map',
+      title: 'Map Des Maisons',
       url: '/app/tabs/map',
-      icon: 'map'
+      icon: 'map',
+      role: 'client'
     },
     {
       title: 'About',
       url: '/app/tabs/about',
-      icon: 'information-circle'
+      icon: 'information-circle',
+      role: 'client'
+    },
+    {
+      title: 'Réservations',
+      url: '/app/tabs/schedule',
+      icon: 'calendar',
+      role: 'agent'
+    },
+    {
+      title: 'Maison D\'hôte',
+      url: '/app/tabs/speakers',
+      icon: 'people',
+      role: 'agent'
+    },
+    {
+      title: 'Ajouter Une Maison',
+      url: '/app/tabs/ajouterMaison',
+      icon: 'add-circle',
+      role: 'agent'
+    },
+    {
+      title: 'Map Des Maisons',
+      url: '/app/tabs/map',
+      icon: 'map',
+      role: 'agent'
+    },
+    {
+      title: 'About',
+      url: '/app/tabs/about',
+      icon: 'information-circle',
+      role: 'agent'
     }
   ];
   loggedIn = false;
@@ -56,10 +93,16 @@ export class AppComponent implements OnInit {
   ) {
     this.initializeApp();
   }
+  ionViewDidEnter (){
+    this.getRole();
+  }
 
   async ngOnInit() {
     this.checkLoginStatus();
     this.listenForLoginEvents();
+    this.userData.role.subscribe((role)=>{
+      this.role=role;
+    })
 
     this.swUpdate.available.subscribe(async res => {
       const toast = await this.toastCtrl.create({
@@ -117,7 +160,7 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.userData.logout().then(() => {
-      return this.router.navigateByUrl('/app/tabs/schedule');
+      return this.router.navigateByUrl('/login');
     });
   }
 
@@ -125,5 +168,10 @@ export class AppComponent implements OnInit {
     this.menu.enable(false);
     this.storage.set('ion_did_tutorial', false);
     this.router.navigateByUrl('/tutorial');
+  }
+  getRole(){
+     this.userData.getRole().then((role)=>{
+      this.role = role;
+     });
   }
 }
